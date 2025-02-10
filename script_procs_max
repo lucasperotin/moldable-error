@@ -1,0 +1,231 @@
+cd sample_rooftop
+echo "ROOFTOP"
+rm list_max*
+rm bound_max*
+rm time_max*
+rm njobs_max*
+rm area_max*
+rm batch_max*
+
+for lambda in {1e-8,1e-7}
+do
+	file="list_max_"$lambda
+	fileB="batch_max_"$lambda
+	fileT="time_max_"$lambda
+	fileA="area_max_"$lambda
+	for p in {1000,2000,3000,4000,5000,7500,10000,12500,15000}
+	do
+		for i in `seq 1 60`
+		do
+			echo $i
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_area" >> $file"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_procs" >> $file"_"$p
+			
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $fileB"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_area" >> $fileB"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_procs" >> $fileB"_"$p
+			
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $fileT"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_area" >> $fileT"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_procs" >> $fileT"_"$p
+
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $fileA"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/area_sample_"$i"_"$lambda"_"$p"_procs" >> $fileA"_"$p
+		done
+	done
+done
+
+p=7500
+for lambda in {2e-7,5e-7,1e-6}
+do
+	file="list_max_"$lambda
+	fileB="batch_max_"$lambda
+	fileT="time_max_"$lambda
+	fileA="area_max_"$lambda
+	for i in `seq 1 60`
+	do
+		echo $i
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_area" >> $file"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_procs" >> $file"_"$p
+		
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $fileB"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_area" >> $fileB"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_procs" >> $fileB"_"$p
+		
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $fileT"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_area" >> $fileT"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_procs" >> $fileT"_"$p
+
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $fileA"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/area_sample_"$i"_"$lambda"_"$p"_procs" >> $fileA"_"$p
+	done
+done
+
+
+lambda=1e-7
+file="njobs_max_"$lambda
+for i in `seq 1 150`
+do
+	echo $i
+	awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+done
+cd ..
+
+cd sample_amdahl
+echo "AMDAHL"
+rm list_max*
+rm bound_max*
+rm time_max*
+rm njobs_max*
+rm area_max*
+rm batch_max*
+
+for lambda in {1e-8,1e-7}
+do
+	file="list_max_"$lambda
+	fileB="batch_max_"$lambda
+	fileT="time_max_"$lambda
+	fileA="area_max_"$lambda
+	for p in {1000,2000,3000,4000,5000,7500,10000,12500,15000}
+	do
+		for i in `seq 1 60`
+		do
+			echo $i
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_area" >> $file"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_procs" >> $file"_"$p
+			
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $fileB"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_area" >> $fileB"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_procs" >> $fileB"_"$p
+			
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $fileT"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_area" >> $fileT"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_procs" >> $fileT"_"$p
+
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $fileA"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/area_sample_"$i"_"$lambda"_"$p"_procs" >> $fileA"_"$p
+		done
+	done
+done
+
+p=7500
+for lambda in {2e-7,5e-7,1e-6}
+do
+	file="list_max_"$lambda
+	fileB="batch_max_"$lambda
+	fileT="time_max_"$lambda
+	fileA="area_max_"$lambda
+	for i in `seq 1 60`
+	do
+		echo $i
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_area" >> $file"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_procs" >> $file"_"$p
+		
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $fileB"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_area" >> $fileB"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_procs" >> $fileB"_"$p
+		
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $fileT"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_area" >> $fileT"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_procs" >> $fileT"_"$p
+
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $fileA"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/area_sample_"$i"_"$lambda"_"$p"_procs" >> $fileA"_"$p
+	done
+done
+
+lambda=1e-7
+file="njobs_max_"$lambda
+for i in `seq 1 150`
+do
+	echo $i
+	awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+done
+cd ..
+
+cd sample_com
+echo "COM"
+rm list_max*
+rm bound_max*
+rm batch_max*
+rm time_max*
+rm njobs_max*
+rm area_max*
+
+for lambda in {1e-8,1e-7}
+do
+	file="list_max_"$lambda
+	fileB="batch_max_"$lambda
+	fileT="time_max_"$lambda
+	fileA="area_max_"$lambda
+	for p in {1000,2000,3000,4000,5000,7500,10000,12500,15000}
+	do
+		for i in `seq 1 60`
+		do
+			echo $i
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_area" >> $file"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_procs" >> $file"_"$p
+			
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $fileB"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_area" >> $fileB"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_procs" >> $fileB"_"$p
+			
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $fileT"_"$p
+			awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_area" >> $fileT"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_procs" >> $fileT"_"$p
+
+			awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $fileA"_"$p
+			awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/area_sample_"$i"_"$lambda"_"$p"_procs" >> $fileA"_"$p
+		done
+	done
+done
+
+p=7500
+for lambda in {2e-7,5e-7,1e-6}
+do
+	file="list_max_"$lambda
+	fileB="batch_max_"$lambda
+	fileT="time_max_"$lambda
+	fileA="area_max_"$lambda
+	for i in `seq 1 60`
+	do
+		echo $i
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_area" >> $file"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/sample_"$i"_"$lambda"_"$p"_procs" >> $file"_"$p
+		
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $fileB"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_area" >> $fileB"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out_batch/sample_"$i"_"$lambda"_"$p"_procs" >> $fileB"_"$p
+		
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $fileT"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_area" >> $fileT"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/time_sample_"$i"_"$lambda"_"$p"_procs" >> $fileT"_"$p
+
+		awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $fileA"_"$p
+		awk 'BEGIN{sum1=0} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_procs" "out/area_sample_"$i"_"$lambda"_"$p"_procs" >> $fileA"_"$p
+	done
+done
+
+lambda=1e-7
+file="njobs_max_"$lambda
+for i in `seq 1 150`
+do
+	echo $i
+	awk -v line=$i 'BEGIN{ORS=" ";sum1=0; print line} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out_batch/sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{ORS=" ";sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/time_sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+		awk 'BEGIN{sum1=0;} FNR==NR {b[FNR] = $2;next} {sum1 = (sum1 > $1/b[FNR] ? sum1 : $1/b[FNR])} END {print sum1}' "out/bound_sample_"$i"_"$lambda"_"$p"_length" "out/area_sample_"$i"_"$lambda"_"$p"_length" >> $file"_"$p
+done
+cd ..

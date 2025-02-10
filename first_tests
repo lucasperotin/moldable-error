@@ -1,0 +1,41 @@
+
+
+for p in {1000,2000,3000,4000,5000,6250,7500,8750,10000,11250,12500,13750,15000}
+do
+	for i in `seq 1 60`
+	do
+		./bound "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_rooftop/out/bound_sample_"$i"_1e-8_"$p"_length" &
+		./bound "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_rooftop/out/bound_sample_"$i"_1e-8_"$p"_area" &
+		./bound "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_rooftop/out/bound_sample_"$i"_1e-8_"$p"_procs" &
+		./mold "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_rooftop/out/sample_"$i"_1e-8_"$p"_length" &
+		./mold "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_rooftop/out/sample_"$i"_1e-8_"$p"_area" &
+		./mold "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_rooftop/out/sample_"$i"_1e-8_"$p"_procs" 
+		./mold_time "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_rooftop/out/time_sample_"$i"_1e-8_"$p"_length" &
+		./mold_time "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_rooftop/out/time_sample_"$i"_1e-8_"$p"_area" &
+		./mold_time "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_rooftop/out/time_sample_"$i"_1e-8_"$p"_procs" &
+		./mold_area "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_rooftop/out/area_sample_"$i"_1e-8_"$p"_length" &
+		./mold_area "sample_rooftop/sample_"$i "sample_rooftop/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_rooftop/out/area_sample_"$i"_1e-8_"$p"_procs" 
+		./bound "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_amdahl/out/bound_sample_"$i"_1e-8_"$p"_length" &
+		./bound "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_amdahl/out/bound_sample_"$i"_1e-8_"$p"_area" &
+		./bound "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_amdahl/out/bound_sample_"$i"_1e-8_"$p"_procs" &
+		./mold "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_amdahl/out/sample_"$i"_1e-8_"$p"_length" &
+		./mold "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_amdahl/out/sample_"$i"_1e-8_"$p"_area" &
+		./mold "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_amdahl/out/sample_"$i"_1e-8_"$p"_procs" 
+		./mold_time "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_amdahl/out/time_sample_"$i"_1e-8_"$p"_length" &
+		./mold_time "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_amdahl/out/time_sample_"$i"_1e-8_"$p"_area" &
+		./mold_time "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_amdahl/out/time_sample_"$i"_1e-8_"$p"_procs" &
+		./mold_area "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_amdahl/out/area_sample_"$i"_1e-8_"$p"_length" &
+		./mold_area "sample_amdahl/sample_"$i "sample_amdahl/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_amdahl/out/area_sample_"$i"_1e-8_"$p"_procs" 
+		./bound "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_com/out/bound_sample_"$i"_1e-8_"$p"_length" &
+		./bound "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_com/out/bound_sample_"$i"_1e-8_"$p"_area" &
+		./bound "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_com/out/bound_sample_"$i"_1e-8_"$p"_procs" &
+		./mold "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_com/out/sample_"$i"_1e-8_"$p"_length" &
+		./mold "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_com/out/sample_"$i"_1e-8_"$p"_area" &
+		./mold "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_com/out/sample_"$i"_1e-8_"$p"_procs" 
+		./mold_time "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_com/out/time_sample_"$i"_1e-8_"$p"_length" &
+		./mold_time "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8"  100 $p area 0 0 0 >> "sample_com/out/time_sample_"$i"_1e-8_"$p"_area" &
+		./mold_time "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_com/out/time_sample_"$i"_1e-8_"$p"_procs" &
+		./mold_area "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8" 100 $p length 0 0 0 >> "sample_com/out/area_sample_"$i"_1e-8_"$p"_length" &
+		./mold_area "sample_com/sample_"$i "sample_com/failure_"$i"_1e-8"  100 $p procs 0 0 0 >> "sample_com/out/area_sample_"$i"_1e-8_"$p"_procs" 
+	done
+done

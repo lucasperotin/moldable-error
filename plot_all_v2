@@ -1,0 +1,22 @@
+python3 procsHistv2.py 0 rft 0
+python3 procsHistv2.py 0 rft 1
+python3 procsHistv2.py 0 amd 0
+python3 procsHistv2.py 0 amd 1
+python3 procsHistv2.py 0 com 0
+python3 procsHistv2.py 0 com 1
+
+python3 procsv2.py 0 rft 1e-7 1
+python3 procsv2.py 0 amd 1e-7 1
+python3 procsv2.py 0 com 1e-7 1
+
+python3 lambdav2.py 0 rft 7500 1
+python3 lambdav2.py 0 amd 7500 1
+python3 lambdav2.py 0 com 7500 1
+
+python3 lambdaM.py 0 rft 7500 1
+python3 lambdaM.py 0 amd 7500 1
+python3 lambdaM.py 0 com 7500 1
+
+python3 njobsv2.py 0 rft
+python3 njobsv2.py 0 amd
+python3 njobsv2.py 0 com
