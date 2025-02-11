@@ -1,1 +1,1 @@
-For any question, write to lucas.perotin@ens-lyon.fr
+For any question on usage, write to lucas.perotin@ens-lyon.fr
